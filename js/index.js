@@ -6,8 +6,40 @@ const btnAgregar = document.getElementById("btnAgregar");
 const inputTarea = document.getElementById("inputTarea");
 const listaTareas = document.getElementById("listaTareas");
 
-console.log('ruvik elementos =>', mensaje, btnCambiar, btnAgregar, inputTarea, listaTareas);
+const obtenerTareas = () => {
+    return JSON.parse(localStorage.getItem("tareas")) || [];
+}
 
+const renderizarTareas = () => {
+    listaTareas.innerHTML = "";
+    const tareas = obtenerTareas();
+    tareas.forEach((texto, index) => {
+    const nuevaTarea = document.createElement("li");
+    nuevaTarea.textContent = texto;
+    const btnBorrar = document.createElement("button");
+    btnBorrar.textContent = "❌";
+    btnBorrar.style.marginLeft = "10px";
+    btnBorrar.addEventListener("click", () => {
+        eliminarTarea(index);
+    });
+    nuevaTarea.appendChild(btnBorrar);
+    listaTareas.appendChild(nuevaTarea);
+    });
+}
+
+const agregarTarea = (texto) => {
+    const tareas = obtenerTareas();
+    tareas.push(texto);
+    guardarTareas(tareas);
+    renderizarTareas();
+}
+
+const eliminarTarea = (index) => {
+    const tareas = obtenerTareas();
+    tareas.splice(index, 1);
+    guardarTareas(tareas);
+    renderizarTareas();
+}
 
 btnCambiar.addEventListener("click", () => {
     mensaje.textContent = "Lo cambiamos con un click";
@@ -20,15 +52,14 @@ btnAgregar.addEventListener("click", () => {
         alert ('Esribe algo antes de agregar la tarea');
         return;
     }
-    const nuevaTarea = document.createElement("li");
-    nuevaTarea.textContent = texto;
-    const btnBorrar = document.createElement("button");
-    btnBorrar.textContent = "❌";
-    btnBorrar.style.marginLeft = "10px";
-    btnBorrar.addEventListener("click", () => {
-        listaTareas.removeChild(nuevaTarea);
-    });
-    nuevaTarea.appendChild(btnBorrar);
-    listaTareas.appendChild(nuevaTarea);
+    agregarTarea(texto);
     inputTarea.value = "";
+});
+
+const guardarTareas = (tareas) => {
+    localStorage.setItem("tareas", JSON.stringify(tareas));
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderizarTareas();
 });
