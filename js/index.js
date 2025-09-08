@@ -13,23 +13,43 @@ const obtenerTareas = () => {
 const renderizarTareas = () => {
     listaTareas.innerHTML = "";
     const tareas = obtenerTareas();
-    tareas.forEach((texto, index) => {
+
+    tareas.forEach((tarea, index) => {
     const nuevaTarea = document.createElement("li");
-    nuevaTarea.textContent = texto;
+   
+    const spanTexto = document.createElement("span");
+    spanTexto.textContent = tarea.texto;
+    //Saber si la tarea está completa
+    if(tarea.completada) {
+        spanTexto.style.textDecoration = "line-through";
+        spanTexto.style.color = 'grey';
+    }
+
+    const btnCompletar = document.createElement("button");
+    btnCompletar.textContent = tarea.completada ? "↩️" : "✔️";
+    btnCompletar.style.marginLeft = "10px";
+    btnCompletar.addEventListener("click", () => {
+        toggleCompletar(index);
+    });
+
     const btnBorrar = document.createElement("button");
     btnBorrar.textContent = "❌";
     btnBorrar.style.marginLeft = "10px";
     btnBorrar.addEventListener("click", () => {
         eliminarTarea(index);
     });
+
+    nuevaTarea.appendChild(spanTexto);
     nuevaTarea.appendChild(btnBorrar);
+    nuevaTarea.appendChild(btnCompletar);
+
     listaTareas.appendChild(nuevaTarea);
     });
 }
 
 const agregarTarea = (texto) => {
     const tareas = obtenerTareas();
-    tareas.push(texto);
+    tareas.push({texto, completada: false});
     guardarTareas(tareas);
     renderizarTareas();
 }
@@ -37,6 +57,13 @@ const agregarTarea = (texto) => {
 const eliminarTarea = (index) => {
     const tareas = obtenerTareas();
     tareas.splice(index, 1);
+    guardarTareas(tareas);
+    renderizarTareas();
+}
+
+const toggleCompletar = (index) => {
+    const tareas = obtenerTareas();
+    tareas[index].completada = !tareas[index].completada;
     guardarTareas(tareas);
     renderizarTareas();
 }
