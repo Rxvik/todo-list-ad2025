@@ -1,44 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List JS</title>
-    <link rel="stylesheet" href="/css/index.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo List JS</title>
+  <link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
-    <header>
-        <h1>Todo List with JavaScript</h1>
-    </header>
-    <main>
-        <p style="display: none;" id="Mensaje">Haz click en el botón para cambiar el texto</p>
-        <button id="btnCambiar">Cambiar texto</button>
-        <h2>Lista Dinamica</h2>
-        <input type="text" id="inputTarea" placeholder="Escribe aquí tu tarea">
-        <button id="btnAgregar">Agregar tarea</button>
+  <header>
+    <h1>Todo List with JavaScript</h1>
+  </header>
 
-        <div id="acciones-lista">
-            <div id="filtros">
-                <button data-filtro="todas" class="filtro activo">Todos</button>
-                <button data-filtro="pendientes" class="filtro">Pendientes</button>
-                <button data-filtro="completadas" class="filtro">Completadas</button>
-            </div>
-            <div id="acciones">
-                <button id="btBorrar completadas" title="Eliminar las tareas completadas">
-                    Borrar Completadas
-                </button>
-                <span id="contadorPendientes" aria-live="polite"></span>
-            </div>
+  <main>
+    <p id="Mensaje" style="display: none;">Haz click en el botón para cambiar el texto</p>
+    <button id="btnCambiar">Cambiar texto</button>
 
-            </div>
-        </div>
+    <h2>Lista Dinámica</h2>
 
-        <ul id="listaTareas"></ul>
-    </main>
-    <footer>
-        <p>Creado con love para todos ustedes </p>
-    </footer>
+    <div id="entrada-tarea">
+      <input type="text" id="inputTarea" placeholder="Escribe aquí tu tarea" />
+      <button id="btnAgregar">Agregar tarea</button>
+    </div>
 
-    <script src="/js/index.js"></script>
+    <div id="acciones-lista">
+      <div id="filtros">
+        <button data-filtro="todas" class="filtro activo">Todos</button>
+        <button data-filtro="pendientes" class="filtro">Pendientes</button>
+        <button data-filtro="completadas" class="filtro">Completadas</button>
+      </div>
+
+      <div id="acciones">
+        <!-- id corregido: btnBorrarCompletadas (sin espacios) -->
+        <button id="btnBorrarCompletadas" title="Eliminar las tareas completadas">
+          Borrar Completadas
+        </button>
+        <span id="contadorPendientes" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <ul id="listaTareas"></ul>
+  </main>
+
+  <footer>
+    <p>Creado con love para todos ustedes</p>
+  </footer>
+
+  <!-- NOTA: usa ruta relativa (sin slash inicial) si trabajas en local -->
+  <script src="js/index.js"></script>
 </body>
 </html>
