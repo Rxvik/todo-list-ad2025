@@ -42,3 +42,41 @@ ul li {
     padding: 8px;
     border-radius: 5px;
 }
+
+#acciones-lista {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 12px 4px;
+    flex-wrap: wrap;
+}
+
+#filtros.filtro {
+    background-color: #e6ee7f;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: black;
+}
+
+#filtros .filtro.activo {
+    outline: 2px solid #07c;
+    font-weight: 600;
+}
+
+#acciones button#btBorrar completadas {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#contadorPendientes {
+    margin-left: 12px;
+    font-size: .95rem;
+    color: #555;
+}

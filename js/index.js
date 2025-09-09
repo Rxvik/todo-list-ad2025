@@ -5,8 +5,43 @@ const btnCambiar = document.getElementById("btnCambiar");
 const btnAgregar = document.getElementById("btnAgregar");
 const inputTarea = document.getElementById("inputTarea");
 const listaTareas = document.getElementById("listaTareas");
+const filtros = document.querySelectorAll("#filtros button");
+const btnBorrarCompletadas = document.getElementById("btBorrarCompletadas");
+const contadorPendientes = document.getElementById("contadorPendientes");
+
+let filtroActual = 'todas';
+
+const genId = () => '${Date.now()}-${Math.random().toString(36).slice(2, 8)}';
 
 const obtenerTareas = () => {
+    const raw = localStorage.getItem("tareas");
+    if (!raw) {
+        return [];
+    }
+    try {
+      const data = JSON.parse(raw);
+      //Validar si son string, convertirlos a objetos con id
+      if (Array.isArray(data) && typeof data[0] === 'string') {
+        const nuevo = data.map((texto) => ({
+            id: genId(),
+            texto,
+            completada: false
+        }));
+        localStorage.setItem("tareas", JSON.stringify(nuevos));
+        return nuevo;
+     }
+     //Validamos cuando ya es un arreglo de objetos
+     if (Array.isArray(data) && data[0].id && !data[0].id) {
+        const nuevo = data.map((obj) => ({
+            id: genId(),
+            ...obj
+        }))
+        localStorage.setItem("tareas", JSON.stringify(nuevo));
+        return nuevo;
+     }
+    } catch (error) {
+        return [];
+    }
     return JSON.parse(localStorage.getItem("tareas")) || [];
 }
 
@@ -14,7 +49,20 @@ const renderizarTareas = () => {
     listaTareas.innerHTML = "";
     const tareas = obtenerTareas();
 
-    tareas.forEach((tarea, index) => {
+    const tareasFiltradas = tareas.filter((tarea) => {
+        if (filtroActual === 'pendientes') {
+            return !tarea.completada;
+        } 
+        if (filtroActual === 'completadas') {
+            return tarea.completada;
+        } 
+        return true;
+    })
+
+    const pendientes = tareas.filter((pen) => !pen.completada).length;
+    contadorPendientes.textContent = pendientes === 1 ? `1 tarea pendiente` : `${pendientes} tareas pendientes`;
+
+    tareasFiltradas.forEach((tarea, index) => {
     const nuevaTarea = document.createElement("li");
    
     const spanTexto = document.createElement("span");
@@ -49,7 +97,7 @@ const renderizarTareas = () => {
 
 const agregarTarea = (texto) => {
     const tareas = obtenerTareas();
-    tareas.push({texto, completada: false});
+    tareas.push({id: genId(), texto, completada: false});
     guardarTareas(tareas);
     renderizarTareas();
 }
@@ -86,6 +134,20 @@ btnAgregar.addEventListener("click", () => {
 const guardarTareas = (tareas) => {
     localStorage.setItem("tareas", JSON.stringify(tareas));
 }
+
+filtros.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        filtroActual = btn.dataset.filtro;
+        renderizarTareas();
+    });
+});
+
+btnBorrarCompletadas.addEventListener("click", () => {
+    const tareas = obtenerTareas();
+    const pendientes = tareas.filter((tarea) => !tarea.completada).
+    guardarTareas(pendientes);
+    renderizarTareas();
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     renderizarTareas();
